@@ -7,12 +7,18 @@ import {
   Routes,
   Route,
   Navigate,
-  Outlet, // Keep Outlet here for conceptual clarity, though it's used in AdminLayout
-} from "react-router-dom";
+  Outlet,} from "react-router-dom";
+import {
+	Link
+}
+from 'react-router-dom';
 
 // --- Page Component Imports (Adjust paths if different in your file system) ---
 // Assuming LoginPage handles login and provides role
 import LoginPage from "./pages/LoginPage"; // Will be created/modified below
+
+
+
 
 // AdminLayout will serve as the main page for the /admin/* routes
 import AdminLayout from "./pages/AdminLayout"; // Your AdminLayout
@@ -23,13 +29,34 @@ import SubjectsListPage from "./pages/admin/SubjectsListPage";
 import CreateSubjectPage from "./pages/admin/CreateSubjectPage";
 
 // Assuming these pages also exist
-import PublicHomePage from "./pages/PublicHomePage"; // If you have one
+import PublicHomePage from "./pages/PublicHomePage"; // TO MAKE
 import FacultyDashboardPage from "./pages/FacultyDashboardPage"; // If you have one
 import NotFoundPage from "./pages/NotFoundPage"; // If you have one
-
 import './index.css'; // Your global CSS import
 
 function App() {
+     
+  const batches = []; // USE API from DB
+  const subjects = []; //USE API from DB
+
+  // MODIFY THESE FUNCTIONS API call using SessionIds
+
+        const addBatch = (batch) => {
+        console.log("Add batch", batch);
+        };
+
+        const deleteBatch = (batchId) => {
+        console.log("Delete batch", batchId);
+        };
+
+        const addSubject = (subject) => {
+        console.log("Add subject", subject);
+        };
+
+        const deleteSubject = (subjectId) => {
+        console.log("Delete subject", subjectId);
+        };
+
   // authDetails will store { email, role }
   const [authDetails, setAuthDetails] = useState(null);
 
@@ -41,7 +68,7 @@ function App() {
   const handleLogout = () => {
     console.log("App.jsx: Logout triggered, clearing authDetails.");
     setAuthDetails(null);
-    // Optionally: Clear any user tokens/data from localStorage or sessionStorage
+    // Important: Clear any user tokens/data from localStorage or sessionStorage
     // localStorage.removeItem('userToken');
     // sessionStorage.removeItem('userData');
   };
@@ -49,43 +76,28 @@ function App() {
   const isAuthenticated = !!authDetails;
   const userRole = authDetails?.role;
 
-  // Protects routes based on authentication and allowed roles
-  const ProtectedRoute = ({ children, allowedRoles }) => {
-    if (!isAuthenticated) {
-      console.log("ProtectedRoute: Not authenticated, redirecting to /login.");
-      return <Navigate to="/login" replace />;
-    }
-    if (allowedRoles && !allowedRoles.includes(userRole)) {
-      console.warn(
-        `ProtectedRoute: Access denied. User role "${userRole}" not in allowed roles: ${allowedRoles.join(", ")}.`
-      );
-      // Redirect to a common home or access denied page
-      return <Navigate to="/" replace />;
-    }
-    console.log(`ProtectedRoute: Access granted for role "${userRole}".`);
-    return children;
-  };
+  // INSECURES ASF
+    const ProtectedRoute = ({ children, allowedRoles }) => {
+      if (!isAuthenticated) {
+        console.log("ProtectedRoute: Not authenticated, redirecting to /login.");
+        return <Navigate to="/login" replace />;
+      }
+      if (allowedRoles && !allowedRoles.includes(userRole)) {
+        console.warn(
+          `ProtectedRoute: Access denied. User role "${userRole}" not in allowed roles: ${allowedRoles.join(", ")}.`
+        );
+        // Redirect to a common home or access denied page
+        return <Navigate to="/" replace />;
+      }
+      console.log(`ProtectedRoute: Access granted for role "${userRole}".`);
+      return children;
+    };
 
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-slate-100">
-        {/* Global Nav (Optional - often part of AdminLayout for logged-in users) */}
-        {!isAuthenticated && ( // Only show global nav if not logged in
-          <nav className="bg-slate-900 text-slate-200 shadow-lg sticky top-0 z-50">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between h-16">
-                <Link to="/" className="font-bold text-xl hover:text-white transition-colors duration-150">
-                  Timetable Portal
-                </Link>
-                <div>
-                  <Link to="/login" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-700 hover:text-white transition-colors duration-150">
-                    Login
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </nav>
-        )}
+        
+       
 
         <main className="flex-grow">
           <Routes>
