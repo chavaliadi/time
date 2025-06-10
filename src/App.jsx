@@ -40,6 +40,7 @@ function App() {
   const subjects = []; //USE API from DB
 
   // MODIFY THESE FUNCTIONS API call using SessionIds
+  // Better remove them from here and use another file same
 
         const addBatch = (batch) => {
         console.log("Add batch", batch);
@@ -95,7 +96,7 @@ function App() {
 
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-slate-100">
+      <div className="flex flex-col min-h-screen bg-green">
         
        
 
@@ -105,9 +106,7 @@ function App() {
             <Route path="/" element={<PublicHomePage />} />
 
             {/* Login Page */}
-            <Route
-              path="/login"
-              element={
+            <Route path="/login" element={
                 // If authenticated, redirect based on role
                 isAuthenticated ? (
                   userRole === "admin" ? (
@@ -161,14 +160,7 @@ function App() {
           </Routes>
         </main>
 
-        {/* Global Footer (Optional - adjust visibility as needed) */}
-        {!isAuthenticated && (
-          <footer className="bg-slate-900 text-slate-400 py-8 text-center text-sm">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              &copy; {new Date().getFullYear()} University Timetable Project.
-            </div>
-          </footer>
-        )}
+        
       </div>
     </Router>
   );
